@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MovieTheaterApplication.Models.Showing>
+
+@{
+    ViewData["Title"] = "ShowingSelection";
+}
+
+<h1>Showing Selection</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AuditoriumId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShowingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AuditoriumId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShowingTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieId)
+            </td>
+            <td>
+                
+                Add select button here
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

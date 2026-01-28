@@ -8,6 +8,8 @@
     <h5>Movies:</h5>
     @foreach(var movie in Model)
     {
-        <p>@movie.Title : @movie.Description</p>
+        <a asp-controller="Home" asp-action="ShowingSelection" asp-route-MovieId="@movie.Id" >@movie.Title</a>
+        <p>@movie.Description</p>
+
     }
 </div>
