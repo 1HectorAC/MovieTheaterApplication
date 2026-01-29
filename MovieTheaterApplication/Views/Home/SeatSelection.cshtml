@@ -1,0 +1,25 @@
+﻿@model IEnumerable<IGrouping<char, ShowingSeat>>
+
+<div>
+    <div class="w-50">
+        <h1>Select Seat</h1>
+
+        @foreach (var group in Model)
+        {
+            <div class="row">
+                @foreach (var seat in group)
+                {
+                    <div class="col-md-4">
+                        <p>@group.Key @seat.Seat!.Column</p>
+
+                    </div>
+
+
+                }
+            </div>
+
+        }
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</div>
+

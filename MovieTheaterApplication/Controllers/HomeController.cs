@@ -34,6 +34,16 @@ namespace MovieTheaterApplication.Controllers
             return View(showings);
         }
 
+        public async Task<IActionResult> SeatSelection(int ShowingId)
+        {
+            // Get seats grouped by 
+            var showingSeats = await _showingRepository.GetShowingSeatsByShowingId(ShowingId);
+            var rowGroupedShowingSeats = showingSeats.GroupBy(i => i.Seat!.Row);
+
+
+
+            return View(rowGroupedShowingSeats);
+        }
 
 
         public IActionResult Privacy()

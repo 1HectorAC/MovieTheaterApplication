@@ -5,5 +5,7 @@ namespace MovieTheaterApplication.Repositories
     public interface IShowingRepository
     {
         Task<List<Showing>> GetShowingsByMovieId(int movieId);
+
+        Task<List<ShowingSeat>> GetShowingSeatsByShowingId(int showingId);
     }
 }
