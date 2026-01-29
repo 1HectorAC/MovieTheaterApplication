@@ -13,5 +13,7 @@
         public int MovieId { get; set;  }
 
         public Movie? Movie { get; set; }
+
+        public List<ShowingSeat> ShowingSeats { get; set; } = new List<ShowingSeat>();
     }
 }
