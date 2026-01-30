@@ -4,13 +4,19 @@
     <div class="w-50">
         <h1>Select Seat</h1>
 
+        <form asp-controller="Home" asp-action="SelectShowingSeat" method="post" >
+
+
+        
         @foreach (var group in Model)
         {
             <div class="row">
                 @foreach (var seat in group)
                 {
                     <div class="col-md-4">
-                        <p>@group.Key @seat.Seat!.Column</p>
+                     
+                        <label for="seat@(group.Key)@(seat.Seat!.Column)">@group.Key @seat.Seat!.Column</label>
+                        <input id="seat@(group.Key)@(seat.Seat!.Column)" name="seatsId" type="checkbox" value="@seat.Id" />
 
                     </div>
 
@@ -20,6 +26,7 @@
 
         }
         <button class="btn btn-primary">Submit</button>
+        </form>
     </div>
 </div>
 

@@ -45,6 +45,25 @@ namespace MovieTheaterApplication.Controllers
             return View(rowGroupedShowingSeats);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SelectShowingSeat(int[] seatsId)
+        {
+            //check if each seat is available and change isAvailable
+
+            //make ticket with reference to showingSeat
+
+            //if success: pass to confirmation page
+            // if fail: return to SeatSelection?
+            return RedirectToAction("Confirmation");
+        }
+
+        public IActionResult Confirmation()
+        {
+            return View();
+        }
+
+
+
 
         public IActionResult Privacy()
         {
