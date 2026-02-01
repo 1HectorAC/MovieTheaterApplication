@@ -1,12 +1,13 @@
 using MovieTheaterApplication.Repositories;
 using MovieTheaterApplication.Repositories.Implementations;
-
+using MovieTheaterApplication.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IShowingRepository, ShowingRepository>();
+builder.Services.AddSingleton<TestDb>();
 
 var app = builder.Build();
 
