@@ -39,10 +39,19 @@ namespace MovieTheaterApplication.Data
         };
 
         //Need to make sure showing and ticket relation to auditorium match
-        public List<Ticket> ticket = new List<Ticket>()
+        public List<Ticket> tickets = new List<Ticket>()
         {
             new Ticket {Id = 1, ShowingId = 1, SeatId = 6 },
             new Ticket {Id = 2, ShowingId = 1, SeatId = 7 }
         };
+
+        public TestDb()
+        {
+            auditoriums[0].Seats = seats;
+            showings[0].Auditorium = auditoriums[0];
+            showings[0].Tickets = tickets;
+            
+
+        }
     }
 }

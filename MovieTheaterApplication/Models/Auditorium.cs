@@ -11,5 +11,7 @@ namespace MovieTheaterApplication.Models
 
         //Consider adding seat rows and column numbers
 
+        public ICollection<Seat> Seats { get; set; } = new List<Seat>();
+
     }
 }
