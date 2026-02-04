@@ -10,9 +10,9 @@ namespace MovieTheaterApplication.Repositories
 
         Task<List<ShowingSeat>> GetShowingSeatsByShowingId(int showingId);
 
-        Task<List<Seat>?> GetSeatsByShowingId(int showingId);
+        Task<List<Seat>> GetSeatsByShowingId(int showingId);
 
-        Task<List<int>?> GetSeatIdsOfTicketsByShowing(int showingId);
+        Task<List<int>> GetSeatIdsOfTicketsByShowingId(int showingId);
 
     }
 }
