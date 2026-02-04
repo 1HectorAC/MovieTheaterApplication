@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IShowingRepository, ShowingRepository>();
+builder.Services.AddScoped<IMovieTheaterRepository, MovieTheaterRepository>();
 builder.Services.AddSingleton<TestDb>();
 
 var app = builder.Build();
