@@ -9,14 +9,11 @@ namespace MovieTheaterApplication.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IMovieRepository _movieRepository;
-        private readonly IShowingRepository _showingRepository;
+
         private readonly IMovieTheaterRepository _movieTheaterRepository;
 
-        public HomeController(IMovieRepository movieRepository, IShowingRepository showingRepository, IMovieTheaterRepository movieTheaterRepository)
+        public HomeController( IMovieTheaterRepository movieTheaterRepository)
         {
-            _movieRepository = movieRepository;
-            _showingRepository = showingRepository;
             _movieTheaterRepository = movieTheaterRepository;
         }
 
