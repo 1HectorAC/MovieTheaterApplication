@@ -14,8 +14,10 @@ namespace MovieTheaterApplication.Models
 
         // Can add more Info like directory, actors... etc
 
+        // Maybe add movie length
+
         //Maybe add field IsActive, Could also add to showing instead.
 
-        public List<Showing> Showings { get; set; } = new List<Showing>();
+        public ICollection<Showing> Showings { get; set; } = new List<Showing>();
     }
 }
