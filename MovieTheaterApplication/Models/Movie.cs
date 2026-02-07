@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MovieTheaterApplication.Models
 {
@@ -18,6 +19,7 @@ namespace MovieTheaterApplication.Models
 
         //Maybe add field IsActive, Could also add to showing instead.
 
+        [JsonIgnore]
         public ICollection<Showing> Showings { get; set; } = new List<Showing>();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MovieTheaterApplication.Models
 {
@@ -8,6 +9,7 @@ namespace MovieTheaterApplication.Models
 
         [Required]
         public int AuditoriumId { get; set; }
+
         public Auditorium? Auditorium { get; set; }
 
         [Required]

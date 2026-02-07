@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MovieTheaterApplication.Models
 {
@@ -18,7 +19,8 @@ namespace MovieTheaterApplication.Models
         public int MovieId { get; set;  }
 
         public Movie? Movie { get; set; }
-       
+
+        [JsonIgnore]
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
