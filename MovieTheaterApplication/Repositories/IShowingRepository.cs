@@ -6,7 +6,6 @@ namespace MovieTheaterApplication.Repositories
     {
         Task<List<Showing>> GetShowingsByMovieId(int movieId);
 
-        Task<List<ShowingSeat>> GetShowingSeatsByShowingId(int showingId);
 
         Task<List<Seat>?> GetSeatsByShowingId(int showingId);
     }
