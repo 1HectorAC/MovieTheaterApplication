@@ -18,5 +18,8 @@ namespace MovieTheaterApplication.Models
         [Required]
         public int Column { get; set;  }
 
+        [JsonIgnore]
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+
     }
 }
