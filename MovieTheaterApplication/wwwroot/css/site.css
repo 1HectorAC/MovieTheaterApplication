@@ -29,3 +29,44 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+
+.moviePanelParent {
+    display: flex;
+    flex-direction: column;
+}
+.moviePanel{
+    display:flex;
+    background-color: #e77c67;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    
+}
+.movieImageSection{
+    flex: 1;
+    display:flex;
+    justify-content:center;
+}
+.movieTextSection{
+    flex: 3;
+    display:flex;
+    padding: 10px;
+    align-items:center;
+}
+.movieTextSection Inner{
+    align-items:center;
+}
+.ImageBox {
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    background-color:white;
+    border-radius:10px;
+}
+.ImageBoxText {
+    font-size: 25px;
+    color:black;
+}
