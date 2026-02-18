@@ -1,45 +1,39 @@
-﻿@model IEnumerable<MovieTheaterApplication.Models.Showing>
+﻿@model List<MovieTheaterApplication.Models.ViewModels.ShowingSelectionViewModel>
 
 @{
     ViewData["Title"] = "ShowingSelection";
 }
 
 <h1>Showing Selection</h1>
-
+<hr />
+<h4>Movie: @ViewBag.MovieTitle </h4>
+<hr/>
 
 <table class="table">
     <thead>
         <tr>
+           
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Auditorium
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AuditoriumId)
+                Showing Time
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShowingTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieId)
-            </th>
+            
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AuditoriumId)
+                @Html.DisplayFor(modelItem => item.AuditoriumName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ShowingTime)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieId)
-            </td>
+          
             <td>
                 
                 <a asp-controller="Home" asp-action="SeatSelection" asp-route-ShowingId="@item.Id">Select Seat</a>

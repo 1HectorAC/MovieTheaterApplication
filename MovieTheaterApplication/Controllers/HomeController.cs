@@ -30,8 +30,18 @@ namespace MovieTheaterApplication.Controllers
         public async Task<IActionResult> ShowingSelection(int MovieId)
         {
             var showings = await _movieTheaterRepository.GetShowingsByMovieId(MovieId);
+            var movie = await _movieTheaterRepository.GetMovieById(MovieId);
 
-            return View(showings);
+            var formatedShowings = showings.Select(i => new ShowingSelectionViewModel
+            {
+                Id = i.Id,
+                ShowingTime = i.ShowingTime,
+                AuditoriumName = (i.Auditorium != null) ? i.Auditorium.Title : ""
+            }).ToList();
+
+            ViewBag.MovieTitle = (movie != null)? movie.Title : "";
+
+            return View(formatedShowings);
         }
 
         public async Task<IActionResult> SeatSelection(int ShowingId)
