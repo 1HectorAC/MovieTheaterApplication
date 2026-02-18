@@ -16,13 +16,14 @@ namespace MovieTheaterApplication.Repositories.Implementations
         // Maybe create seperate repositories later
         public async Task<List<Movie>> GetMovies()
         {
-            var movies = _context.Movies.ToList();
+            var movies = await _context.Movies.ToListAsync();
             return movies;
         }
 
         public async Task<List<Showing>> GetShowingsByMovieId(int movieId)
         {
-            var showings = _context.Showings.Where(i => i.MovieId == movieId).ToList();
+            var showings = await _context.Showings.Where(i => i.MovieId == movieId).Include(i => i.Auditorium).ToListAsync();
+
             return showings;
         }
 
@@ -32,10 +33,10 @@ namespace MovieTheaterApplication.Repositories.Implementations
         {
             // Consider checking if auditorim for showing exits before getting.
 
-            var showing = _context.Showings
+            var showing = await _context.Showings
                 .Include(i => i.Auditorium)
                 .ThenInclude(i => i.Seats)
-                .FirstOrDefault(i => i.Id == showingId);
+                .FirstOrDefaultAsync(i => i.Id == showingId);
 
             if (showing is null)
                 return new List<Seat>();
@@ -49,9 +50,9 @@ namespace MovieTheaterApplication.Repositories.Implementations
 
         public async Task<List<int>> GetSeatIdsOfTicketsByShowingId(int showingId)
         {
-            var showing = _context.Showings
+            var showing = await _context.Showings
                 .Include(i => i.Tickets)
-                .FirstOrDefault(i => i.Id == showingId);
+                .FirstOrDefaultAsync(i => i.Id == showingId);
 
             if (showing is null)
                 return new List<int>();
@@ -62,6 +63,12 @@ namespace MovieTheaterApplication.Repositories.Implementations
 
             var seatIds = tickets.Select(i => i.SeatId).ToList();
             return seatIds;
+        }
+
+        public async Task<Movie?> GetMovieById(int movieId)
+        {
+            var movie = await _context.Movies.FirstOrDefaultAsync(i => i.Id == movieId);
+            return movie;
         }
     }
 }
