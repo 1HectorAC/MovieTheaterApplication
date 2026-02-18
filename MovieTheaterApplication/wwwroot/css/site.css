@@ -37,7 +37,7 @@ body {
 }
 .moviePanel{
     display:flex;
-    background-color: #e77c67;
+    background-color: #ff9d8a;
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
@@ -69,4 +69,25 @@ body {
 .ImageBoxText {
     font-size: 25px;
     color:black;
+}
+
+
+
+.centerPanelParent{
+    display:flex;
+    justify-content:center;
+}
+.centerPanelParent div{
+    flex-basis: 75%;
+}
+
+@media(max-width: 760px){
+    .centerPanelParent div {
+        flex-basis: 100%;
+    }
+}
+.basicPanel {
+    background-color: #ff9d8a;
+    color:red;
+    padding:5px
 }

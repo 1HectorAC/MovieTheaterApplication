@@ -4,42 +4,42 @@
     ViewData["Title"] = "ShowingSelection";
 }
 
-<h1>Showing Selection</h1>
+<h1 style="text-align:center">Showing Selection</h1>
 <hr />
-<h4>Movie: @ViewBag.MovieTitle </h4>
+<h4 style="text-align:center">Movie: @ViewBag.MovieTitle </h4>
 <hr/>
 
-<table class="table">
-    <thead>
-        <tr>
-           
-            <th>
-                Auditorium
-            </th>
-            <th>
-                Showing Time
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.AuditoriumName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShowingTime)
-            </td>
-          
-            <td>
-                
-                <a asp-controller="Home" asp-action="SeatSelection" asp-route-ShowingId="@item.Id">Select Seat</a>
-                
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="centerPanelParent">
+
+<div class="basicPanel">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Auditorium
+                </th>
+                <th>
+                    Showing Time
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AuditoriumName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShowingTime)
+                </td>
+                <td>      
+                    <a asp-controller="Home" asp-action="SeatSelection" asp-route-ShowingId="@item.Id">Select Seat</a>           
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
+
+</div>
