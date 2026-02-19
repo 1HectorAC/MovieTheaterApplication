@@ -1,9 +1,19 @@
 ﻿@model IEnumerable<IGrouping<char, MovieTheaterApplication.Models.ViewModels.SeatSelectionViewModel>>
 
-<div>
-    <div class="w-50">
-        <h1>Select Seat</h1>
+<div style="text-align:center">
+    <h1>Select Seat</h1>
+    <hr />
+    <h4>Movie: @ViewBag.MovieTitle</h4>
 
+    <hr />
+    <h5>Date/Time: @ViewBag.ShowingTime</h5>
+    <h5>Auditorium: @ViewBag.Auditorium </h5>
+    <hr />
+</div>
+
+<div class="centerPanelParent2">
+    <div class="Inner">
+        <br/>
         <form asp-controller="Home" asp-action="SelectShowingSeat" method="post">
 
 
@@ -26,13 +36,13 @@
                             }
 
                         </div>
-
-
                     }
                 </div>
 
             }
+            <br/>
             <button class="btn btn-primary">Submit</button>
+            <br /><br/>
         </form>
     </div>
 </div>

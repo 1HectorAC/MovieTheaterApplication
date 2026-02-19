@@ -46,15 +46,24 @@ namespace MovieTheaterApplication.Controllers
 
         public async Task<IActionResult> SeatSelection(int ShowingId)
         {
-            // Get seats grouped by 
-            var seats = await _movieTheaterRepository.GetSeatsByShowingId(ShowingId);
+            var showing = await _movieTheaterRepository.GetShowingById(ShowingId);
+
+            // Null value check of showing fields, for ViewBag checks at end
+            if (showing is null || showing.Movie is null || showing.Auditorium is null)
+            {
+                RedirectToAction("Index");
+            }
+
+            var seats = showing!.Auditorium!.Seats;
           
             var seatIdsForTickets = await _movieTheaterRepository.GetSeatIdsOfTicketsByShowingId(ShowingId);
 
             var formatedSeats = seats.Select(i => new SeatSelectionViewModel { SeatId = i.Id, Column = i.Column, Row = i.Row, IsSelected = seatIdsForTickets.Contains(i.Id)});
-
             var groupedFormatedSeats = formatedSeats.GroupBy(i => i.Row);
 
+            ViewBag.MovieTitle = showing!.Movie!.Title;
+            ViewBag.ShowingTime = showing!.ShowingTime;
+            ViewBag.Auditorium = showing!.Auditorium!.Title;
 
             return View(groupedFormatedSeats);
         }

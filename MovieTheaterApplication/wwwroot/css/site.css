@@ -91,3 +91,14 @@ body {
     color:red;
     padding:5px
 }
+
+.centerPanelParent2 {
+    text-align:center;
+    display:flex;
+    justify-content:center;
+}
+.centerPanelParent2 .Inner {
+    flex-basis: 50%;
+    background-color: #ff9d8a;
+    border-radius: 10px;
+}
