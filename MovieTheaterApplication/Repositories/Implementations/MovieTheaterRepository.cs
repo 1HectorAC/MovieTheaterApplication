@@ -22,18 +22,24 @@ namespace MovieTheaterApplication.Repositories.Implementations
 
         public async Task<List<Showing>> GetShowingsByMovieId(int movieId)
         {
-            var showings = await _context.Showings.Where(i => i.MovieId == movieId).Include(i => i.Auditorium).ToListAsync();
+            var showings = await _context.Showings
+                .AsNoTracking()
+                .Where(i => i.MovieId == movieId)
+                .Include(i => i.Auditorium)
+                .ToListAsync();
 
             return showings;
         }
 
 
+        // Maybe remove, Unused
         //Maybe move to seats repository
         public async Task<List<Seat>> GetSeatsByShowingId(int showingId)
         {
             // Consider checking if auditorim for showing exits before getting.
 
             var showing = await _context.Showings
+                .AsNoTracking()
                 .Include(i => i.Auditorium)
                 .ThenInclude(i => i.Seats)
                 .FirstOrDefaultAsync(i => i.Id == showingId);
@@ -51,6 +57,7 @@ namespace MovieTheaterApplication.Repositories.Implementations
         public async Task<List<int>> GetSeatIdsOfTicketsByShowingId(int showingId)
         {
             var showing = await _context.Showings
+                .AsNoTracking()
                 .Include(i => i.Tickets)
                 .FirstOrDefaultAsync(i => i.Id == showingId);
 
@@ -67,8 +74,22 @@ namespace MovieTheaterApplication.Repositories.Implementations
 
         public async Task<Movie?> GetMovieById(int movieId)
         {
-            var movie = await _context.Movies.FirstOrDefaultAsync(i => i.Id == movieId);
+            var movie = await _context.Movies
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == movieId);
             return movie;
+        }
+
+        public async Task<Showing?> GetShowingById(int showingId)
+        {
+            var showing = await _context.Showings
+                .AsNoTracking()
+                .Include(i => i.Movie)
+                .Include(i => i.Auditorium)
+                .ThenInclude(i => i.Seats)
+                .FirstOrDefaultAsync(i => i.Id == showingId);
+
+            return showing;
         }
     }
 }

@@ -13,5 +13,7 @@ namespace MovieTheaterApplication.Repositories
         Task<List<int>> GetSeatIdsOfTicketsByShowingId(int showingId);
 
         Task<Movie?> GetMovieById(int movieId);
+
+        Task<Showing?> GetShowingById(int showingId);
     }
 }
