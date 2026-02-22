@@ -16,25 +16,22 @@
         <br/>
         <form asp-controller="Home" asp-action="SelectShowingSeat" method="post">
 
-
             @foreach (var group in Model)
             {
                 <div class="row">
                     @foreach (var seat in group)
                     {
                         <div class="col-md-4">
-                            <label for="seat@(group.Key)@(seat.Column)">@group.Key @seat.Column</label>
+                            <div class="@(seat.IsSelected ? "seatStatusTaken" : "seatStatusNormal")">
+                                <label for="seat@(group.Key)@(seat.Column)">@group.Key @seat.Column</label>
 
-                            @if (seat.IsSelected)
-                            {
-                                <input id="seat@(group.Key)@(seat.Column)" name="seatsId" type="checkbox" value="@seat.SeatId" disabled />
-
-                            }
-                            else
-                            {
-                                <input id="seat@(group.Key)@(seat.Column)" name="seatsId" type="checkbox" value="@seat.SeatId" />
-                            }
-
+                                <input id="seat@(group.Key)@(seat.Column)"
+                                       name="seatsId"
+                                       type="checkbox"
+                                       value="@seat.SeatId"
+                                       disabled="@(seat.IsSelected)" />
+                            </div>
+                            
                         </div>
                     }
                 </div>

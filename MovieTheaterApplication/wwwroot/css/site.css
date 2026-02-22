@@ -102,3 +102,18 @@ body {
     background-color: #ff9d8a;
     border-radius: 10px;
 }
+
+.seatStatusNormal {
+    background-color:#7eb6fc;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 5px;
+    margin-bottom: 10px;
+
+}
+.seatStatusTaken {
+    background-color: #ff4a4a;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 5px;
+}
