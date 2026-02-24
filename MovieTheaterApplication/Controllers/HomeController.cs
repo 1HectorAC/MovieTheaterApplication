@@ -48,7 +48,7 @@ namespace MovieTheaterApplication.Controllers
         {
             var showing = await _movieTheaterRepository.GetShowingById(ShowingId);
 
-            // Null value check of showing fields, for ViewBag checks at end
+            // Null value check of showing fields
             if (showing is null || showing.Movie is null || showing.Auditorium is null)
             {
                 RedirectToAction("Index");
@@ -58,22 +58,31 @@ namespace MovieTheaterApplication.Controllers
           
             var seatIdsForTickets = await _movieTheaterRepository.GetSeatIdsOfTicketsByShowingId(ShowingId);
 
-            var formatedSeats = seats.Select(i => new SeatSelectionViewModel { SeatId = i.Id, Column = i.Column, Row = i.Row, IsSelected = seatIdsForTickets.Contains(i.Id)});
+            var formatedSeats = seats.Select(i => new SeatListViewModel { SeatId = i.Id, Column = i.Column, Row = i.Row, IsSelected = seatIdsForTickets.Contains(i.Id)});
             var groupedFormatedSeats = formatedSeats.GroupBy(i => i.Row);
 
-            ViewBag.MovieTitle = showing!.Movie!.Title;
-            ViewBag.ShowingTime = showing!.ShowingTime;
-            ViewBag.Auditorium = showing!.Auditorium!.Title;
+            SeatSelectionViewModel data = new SeatSelectionViewModel
+            {
+                ShowingId = ShowingId,
+                MovieTitle = showing!.Movie!.Title,
+                ShowingTime = showing.ShowingTime,
+                AuditoriumTitle = showing.Auditorium.Title,
+                GroupedSeats = groupedFormatedSeats,
+            };
 
-            return View(groupedFormatedSeats);
+            return View(data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SelectShowingSeat(int[] seatsId)
+        public async Task<IActionResult> SelectShowingSeat(int[] seatsId, int ShowingId)
         {
-            //check if each seat is available and change isAvailable
+            Array.ForEach(seatsId, i => Console.WriteLine(i + " "));
 
-            //make ticket with reference to showingSeat
+            Console.WriteLine("Showing Id: " + ShowingId);
+
+            //check if ticket with seat exits
+
+            //make tickets
 
             //if success: pass to confirmation page
             // if fail: return to SeatSelection?
@@ -84,8 +93,6 @@ namespace MovieTheaterApplication.Controllers
         {
             return View();
         }
-
-
 
 
         public IActionResult Privacy()

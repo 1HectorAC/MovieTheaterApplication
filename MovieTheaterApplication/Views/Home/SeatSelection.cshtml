@@ -1,13 +1,13 @@
-﻿@model IEnumerable<IGrouping<char, MovieTheaterApplication.Models.ViewModels.SeatSelectionViewModel>>
+﻿@model MovieTheaterApplication.Models.ViewModels.SeatSelectionViewModel
 
 <div style="text-align:center">
     <h1>Select Seat</h1>
     <hr />
-    <h4>Movie: @ViewBag.MovieTitle</h4>
+    <h4>Movie: @Model.MovieTitle</h4>
 
     <hr />
-    <h5>Date/Time: @ViewBag.ShowingTime</h5>
-    <h5>Auditorium: @ViewBag.Auditorium </h5>
+    <h5>Date/Time: @Model.ShowingTime</h5>
+    <h5>Auditorium: @Model.AuditoriumTitle </h5>
     <hr />
 </div>
 
@@ -15,8 +15,9 @@
     <div class="Inner">
         <br/>
         <form asp-controller="Home" asp-action="SelectShowingSeat" method="post">
+            <input type="hidden" name="ShowingId" value=@Model.ShowingId />
 
-            @foreach (var group in Model)
+            @foreach (var group in Model.GroupedSeats)
             {
                 <div class="row">
                     @foreach (var seat in group)

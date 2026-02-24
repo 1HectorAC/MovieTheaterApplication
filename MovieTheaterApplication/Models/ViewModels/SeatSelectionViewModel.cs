@@ -2,13 +2,13 @@
 {
     public class SeatSelectionViewModel
     {
-        public int SeatId { get; set; }
+        public int ShowingId { get; set; }
+        public required string MovieTitle { get; set; }
 
-        public char Row { get; set; }
+        public DateTime ShowingTime { get; set; }
 
-        public int Column { get; set; }
+        public required string AuditoriumTitle { get; set; }
 
-        public bool IsSelected { get; set; }
-
+        public required IEnumerable<IGrouping<char, SeatListViewModel>> GroupedSeats { get; set; }
     }
 }
