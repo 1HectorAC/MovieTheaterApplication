@@ -91,5 +91,18 @@ namespace MovieTheaterApplication.Repositories.Implementations
 
             return showing;
         }
+
+        public async Task TicketsAddRange(int[] seatIds, int showingId)
+        {
+            var tickets = seatIds.ToList().Select(i => new Ticket { SeatId = i, ShowingId = showingId });
+
+            await _context.AddRangeAsync(tickets);
+        }
+
+
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

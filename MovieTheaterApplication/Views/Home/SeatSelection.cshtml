@@ -15,7 +15,7 @@
     <div class="Inner">
         <br/>
         <form asp-controller="Home" asp-action="SelectShowingSeat" method="post">
-            <input type="hidden" name="ShowingId" value=@Model.ShowingId />
+            <input type="hidden" name="showingId" value=@Model.ShowingId />
 
             @foreach (var group in Model.GroupedSeats)
             {

@@ -15,5 +15,9 @@ namespace MovieTheaterApplication.Repositories
         Task<Movie?> GetMovieById(int movieId);
 
         Task<Showing?> GetShowingById(int showingId);
+
+        Task TicketsAddRange(int[] SeatIds, int showingId);
+
+        Task SaveChanges();
     }
 }

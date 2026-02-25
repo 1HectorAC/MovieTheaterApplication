@@ -74,18 +74,23 @@ namespace MovieTheaterApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SelectShowingSeat(int[] seatsId, int ShowingId)
+        public async Task<IActionResult> SelectShowingSeat(int[] seatsId, int showingId)
         {
-            Array.ForEach(seatsId, i => Console.WriteLine(i + " "));
 
-            Console.WriteLine("Showing Id: " + ShowingId);
+            await _movieTheaterRepository.TicketsAddRange(seatsId, showingId);
 
-            //check if ticket with seat exits
-
-            //make tickets
-
-            //if success: pass to confirmation page
-            // if fail: return to SeatSelection?
+            try
+            {
+                await _movieTheaterRepository.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                // Maybe redirect to error page
+                // Or Send error message viewBag
+                return RedirectToAction("SeatSelection", new { ShowingId = showingId });
+            }
+            
             return RedirectToAction("Confirmation");
         }
 
