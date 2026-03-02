@@ -15,7 +15,7 @@
     <div class="Inner">
         <br/>
         <form asp-controller="Home" asp-action="SelectShowingSeat" method="post">
-            <input type="hidden" name="showingId" value=@Model.ShowingId />
+            <input type="hidden" name="ShowingId" value=@Model.ShowingId />
 
             @foreach (var group in Model.GroupedSeats)
             {
@@ -27,20 +27,22 @@
                                 <label for="seat@(group.Key)@(seat.Column)">@group.Key @seat.Column</label>
 
                                 <input id="seat@(group.Key)@(seat.Column)"
-                                       name="seatsId"
+                                       name="SeatIds"
                                        type="checkbox"
                                        value="@seat.SeatId"
                                        disabled="@(seat.IsSelected)" />
                             </div>
-                            
                         </div>
                     }
                 </div>
-
             }
             <br/>
             <button class="btn btn-primary">Submit</button>
-            <br /><br/>
+                @if(TempData["ErrorMessage"] != null)
+                {
+                    <p>System Error. Can't select seats.</p>
+                }
+                <br /><br/>
         </form>
     </div>
 </div>

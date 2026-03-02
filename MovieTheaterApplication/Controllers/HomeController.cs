@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MovieTheaterApplication.DTO;
 using MovieTheaterApplication.Models;
 using MovieTheaterApplication.Models.ViewModels;
 using MovieTheaterApplication.Repositories;
@@ -74,21 +75,19 @@ namespace MovieTheaterApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SelectShowingSeat(int[] seatsId, int showingId)
+        public async Task<IActionResult> SelectShowingSeat([FromForm] CreateTicketsDto dto )
         {
-
-            await _movieTheaterRepository.TicketsAddRange(seatsId, showingId);
-
             try
             {
+                await _movieTheaterRepository.TicketsAddRange(dto.SeatIds, dto.ShowingId);
                 await _movieTheaterRepository.SaveChanges();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 // Maybe redirect to error page
-                // Or Send error message viewBag
-                return RedirectToAction("SeatSelection", new { ShowingId = showingId });
+                TempData["ErrorMessage"] = "error with stuff";
+                return RedirectToAction("SeatSelection", new { ShowingId = dto.ShowingId });
             }
             
             return RedirectToAction("Confirmation");
