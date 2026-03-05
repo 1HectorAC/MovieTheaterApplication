@@ -1,16 +1,16 @@
 ﻿@model MovieTheaterApplication.Models.ViewModels.SeatSelectionViewModel
 
 <div style="text-align:center">
-    <h1>Select Seat</h1>
+    <partial name="_ProgressIndicatorPartial" model=3></partial>
     <hr />
     <h4>Movie: @Model.MovieTitle</h4>
-
     <hr />
     <h5>Date/Time: @Model.ShowingTime</h5>
     <h5>Auditorium: @Model.AuditoriumTitle </h5>
-    <hr />
+    
 </div>
 
+<hr />
 <div class="centerPanelParent2">
     <div class="Inner">
         <br/>
