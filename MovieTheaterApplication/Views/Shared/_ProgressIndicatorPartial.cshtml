@@ -1,0 +1,37 @@
+﻿@model int
+    <div class="progressIndicator">
+        <div class="progressStep @(Model > 1? "completed": (Model == 1? "current":""))">
+            <div>
+                <h5><u>Step 1</u></h5>
+                <p>Select Movie</p>
+            </div>
+        </div>
+        <div class="progressLine">
+            <hr />
+        </div>
+    <div class="progressStep @(Model > 2 ? "completed" : (Model == 2 ? "current" : ""))">
+            <div>
+                <h5><u>Step 2</u></h5>
+                <p>Select Showing</p>
+            </div>
+        </div>
+        <div class="progressLine">
+            <hr />
+        </div>
+    <div class="progressStep @(Model > 3 ? "completed" : (Model == 3 ? "current" : ""))">
+            <div>
+                <h5><u>Step 3</u></h5>
+                <p>Select Seats</p>
+            </div>
+        </div>
+        <div class="progressLine">
+            <hr />
+        </div>
+    <div class="progressStep @(Model > 4 ? "completed" : (Model == 4 ? "current" : ""))">
+            <div>
+                <h5><u>Step 4</u></h5>
+                <p>Confirm</p>
+            </div>
+        </div>
+
+    </div>

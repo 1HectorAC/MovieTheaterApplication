@@ -35,13 +35,11 @@ body {
 }
 
 
-.moviePanelParent {
-    display: flex;
-    flex-direction: column;
-}
+/* Movie Panel Stuff*/
 .moviePanel{
     display:flex;
-    background-color: #ff9d8a;
+   
+    background-color: var(--baseColor);
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
@@ -53,7 +51,7 @@ body {
     justify-content:center;
 }
 .movieTextSection{
-    flex: 3;
+    flex: 4;
     display:flex;
     padding: 10px;
     align-items:center;
@@ -76,25 +74,29 @@ body {
 }
 
 
-
 .centerPanelParent{
     display:flex;
     justify-content:center;
 }
-.centerPanelParent div{
+.centerPanelParent > div{
     flex-basis: 75%;
 }
 
 @media(max-width: 760px){
-    .centerPanelParent div {
+    .centerPanelParent > div {
         flex-basis: 100%;
     }
 }
 .basicPanel {
-    background-color: #ff9d8a;
-    color:red;
-    padding:5px
+    background-color: var(--baseColor);
+    border-radius: 10px;
+    padding:5px;
 }
+.table{
+    color:red;
+    background-color:red;
+}
+
 
 .centerPanelParent2 {
     text-align:center;
