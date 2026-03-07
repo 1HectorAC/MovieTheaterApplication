@@ -1,4 +1,4 @@
-﻿@model List<MovieTheaterApplication.Models.ViewModels.ShowingSelectionViewModel>
+﻿@model MovieTheaterApplication.Models.ViewModels.ShowingSelectionViewModel
 
 @{
     ViewData["Title"] = "ShowingSelection";
@@ -6,24 +6,29 @@
 
 <partial name="_ProgressIndicatorPartial" model=2></partial>
 <hr />
-<h4 style="text-align:center">Movie: @ViewBag.MovieTitle </h4>
+<h4 style="text-align:center">Movie: @Model.MovieTitle </h4>
 <hr/>
 
-<div class="centerPanelParent">
-    <div>
-        <div class="basicPanel">
-            @foreach (var item in Model)
-            {
-                <div>
-                    <a asp-controller="Home"
-                       asp-action="SeatSelection"
-                       asp-route-ShowingId="@item.Id"
-                       class="btn btn-primary">
-                        @item.ShowingTime
-                    </a>
-                </div>
-
-            }
+@foreach (var group in Model.GroupedShowingByDate)
+{
+    <div class="centerPanelParent">
+        <div>
+            <h5>@group.Key</h5>
+            <div class="basicPanel">
+                
+                @foreach (var item in group)
+                {
+                    <div>
+                        <a asp-controller="Home"
+                           asp-action="SeatSelection"
+                           asp-route-ShowingId="@item.Id"
+                           class="btn btn-primary">
+                            @item.ShowingTime.ToString("t")
+                        </a>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
+}
+

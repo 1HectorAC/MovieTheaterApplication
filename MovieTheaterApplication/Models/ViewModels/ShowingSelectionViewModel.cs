@@ -2,10 +2,9 @@
 {
     public class ShowingSelectionViewModel
     {
-        public int Id { get; set; }
+        public required string MovieTitle { get; set; }
 
-        public DateTime ShowingTime { get; set; }
-
-        public required string AuditoriumName { get; set;  }
+        public required IEnumerable<IGrouping<DateOnly, ShowingViewModel>> GroupedShowingByDate
+        { get; set; } 
     }
 }

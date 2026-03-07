@@ -18,7 +18,6 @@ namespace MovieTheaterApplication.Controllers
             _movieTheaterRepository = movieTheaterRepository;
         }
 
-
         public async Task<IActionResult> Index()
         {
             // Might want to narrow to showings to today or add range somehow
@@ -33,16 +32,21 @@ namespace MovieTheaterApplication.Controllers
             var showings = await _movieTheaterRepository.GetShowingsByMovieId(MovieId);
             var movie = await _movieTheaterRepository.GetMovieById(MovieId);
 
-            var formatedShowings = showings.Select(i => new ShowingSelectionViewModel
+            var formatedShowings = showings.Select(i => new ShowingViewModel
             {
                 Id = i.Id,
-                ShowingTime = i.ShowingTime,
-                AuditoriumName = (i.Auditorium != null) ? i.Auditorium.Title : ""
-            }).ToList();
+                ShowingTime = i.ShowingTime
+            }).OrderBy(i => i.ShowingTime).ToList();
 
-            ViewBag.MovieTitle = (movie != null)? movie.Title : "";
+            var groupedShowings = formatedShowings.GroupBy(i => DateOnly.FromDateTime(i.ShowingTime));
 
-            return View(formatedShowings);
+            ShowingSelectionViewModel data = new ShowingSelectionViewModel
+            {
+                MovieTitle = (movie != null) ? movie.Title : "",
+                GroupedShowingByDate = groupedShowings
+            };
+
+            return View(data);
         }
 
         public async Task<IActionResult> SeatSelection(int ShowingId)
