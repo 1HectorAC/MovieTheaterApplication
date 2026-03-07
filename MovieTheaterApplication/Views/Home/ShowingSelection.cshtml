@@ -10,15 +10,20 @@
 <hr/>
 
 <div class="centerPanelParent">
+    <div>
+        <div class="basicPanel">
+            @foreach (var item in Model)
+            {
+                <div>
+                    <a asp-controller="Home"
+                       asp-action="SeatSelection"
+                       asp-route-ShowingId="@item.Id"
+                       class="btn btn-primary">
+                        @item.ShowingTime
+                    </a>
+                </div>
 
-    <div class="basicPanel">
-        @foreach (var item in Model) {
-            <a asp-controller="Home" 
-                asp-action="SeatSelection" 
-                asp-route-ShowingId="@item.Id" 
-                class="btn btn-primary">
-                @item.ShowingTime
-            </a>
-        }
+            }
+        </div>
     </div>
 </div>
