@@ -1,19 +1,15 @@
 ﻿@model MovieTheaterApplication.Models.ViewModels.SeatSelectionViewModel
 
-<div style="text-align:center">
-    <partial name="_ProgressIndicatorPartial" model=3></partial>
-    <hr />
-    <h4>Movie: @Model.MovieTitle</h4>
-    <hr />
-    <h5>Date/Time: @Model.ShowingTime</h5>
-    <h5>Auditorium: @Model.AuditoriumTitle </h5>
-    
-</div>
-
+<partial name="_ProgressIndicatorPartial" model=3></partial>
 <hr />
-<div class="centerPanelParent2">
-    <div class="Inner">
-        <br/>
+<h4 style="text-align:center">Movie: @Model.MovieTitle</h4>
+<hr />
+<h5 style="text-align:center">Date/Time: @Model.ShowingTime.ToString("g")</h5> 
+<hr />
+
+<div class="centerPanelParent">
+    <div class="basicPanel2">
+
         <form asp-controller="Home" asp-action="SelectShowingSeat" method="post">
             <input type="hidden" name="ShowingId" value=@Model.ShowingId />
 
@@ -22,7 +18,7 @@
                 <div class="row">
                     @foreach (var seat in group)
                     {
-                        <div class="col-md-4">
+                        <div class="col-sm-4">
                             <div class="@(seat.IsSelected ? "seatStatusTaken" : "seatStatusNormal")">
                                 <label for="seat@(group.Key)@(seat.Column)">@group.Key @seat.Column</label>
 
@@ -42,7 +38,6 @@
                 {
                     <p>System Error. Can't select seats.</p>
                 }
-                <br /><br/>
         </form>
     </div>
 </div>
