@@ -32,7 +32,10 @@ namespace MovieTheaterApplication.Controllers
             var showings = await _movieTheaterRepository.GetShowingsByMovieId(MovieId);
             var movie = await _movieTheaterRepository.GetMovieById(MovieId);
 
-            var formatedShowings = showings.Select(i => new ShowingViewModel
+            // Get DateTime for an hour ago to filter out old showings.
+            var currentDateTime = DateTime.Now.AddHours(-1);
+
+            var formatedShowings = showings.Where(i => i.ShowingTime > currentDateTime).Select(i => new ShowingViewModel
             {
                 Id = i.Id,
                 ShowingTime = i.ShowingTime
