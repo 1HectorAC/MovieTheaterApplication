@@ -9,36 +9,51 @@
 
 <div class="centerPanelParent">
     <div class="basicPanel2">
+        @if(Model.TotalAvailableSeats > 0)
+        {
+            <form asp-controller="Home" asp-action="SelectShowingSeat" method="post">
+                <input type="hidden" name="ShowingId" value=@Model.ShowingId />
 
-        <form asp-controller="Home" asp-action="SelectShowingSeat" method="post">
-            <input type="hidden" name="ShowingId" value=@Model.ShowingId />
+                @foreach (var group in Model.GroupedSeats)
+                {
+                    <div class="row">
+                        @foreach (var seat in group)
+                        {
+                            <div class="col-sm-4">
+                                <div class="@(seat.IsSelected ? "seatStatusTaken" : "seatStatusNormal")">
+                                    <label for="seat@(group.Key)@(seat.Column)">@group.Key @seat.Column</label>
 
-            @foreach (var group in Model.GroupedSeats)
-            {
-                <div class="row">
-                    @foreach (var seat in group)
-                    {
-                        <div class="col-sm-4">
-                            <div class="@(seat.IsSelected ? "seatStatusTaken" : "seatStatusNormal")">
-                                <label for="seat@(group.Key)@(seat.Column)">@group.Key @seat.Column</label>
-
-                                <input id="seat@(group.Key)@(seat.Column)"
-                                       name="SeatIds"
-                                       type="checkbox"
-                                       value="@seat.SeatId"
-                                       disabled="@(seat.IsSelected)" />
+                                    <input id="seat@(group.Key)@(seat.Column)"
+                                           name="SeatIds"
+                                           type="checkbox"
+                                           value="@seat.SeatId"
+                                           disabled="@(seat.IsSelected)" />
+                                </div>
                             </div>
-                        </div>
-                    }
-                </div>
-            }
-            <br/>
-            <button class="btn btn-primary">Submit</button>
-                @if(TempData["ErrorMessage"] != null)
+                        }
+                    </div>
+                }
+                <br />
+                <button class="btn btn-primary">Submit</button>
+                @if (TempData["ErrorMessage"] != null)
                 {
                     <p>System Error. Can't select seats.</p>
                 }
-        </form>
+            </form>
+        }
+        else
+        {
+            <div>
+                <h1>No Seats Available</h1>
+                <br /><br />
+                <a asp-controller="Home"
+                   asp-action="ShowingSelection"
+                   asp-route-MovieId="@(Model.MovieId)"
+                   class="btn btn-primary">Back to Showing Selction</a>
+            </div>
+            
+        }
+
     </div>
 </div>
 

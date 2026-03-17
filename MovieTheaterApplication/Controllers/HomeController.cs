@@ -61,18 +61,22 @@ namespace MovieTheaterApplication.Controllers
 
             var seats = showing!.Auditorium!.Seats;
           
+            // Get seatIds for tickets of a the specified showing. Used to filter out seats that are open (has no ticket)
             var seatIdsForTickets = await _movieTheaterRepository.GetSeatIdsOfTicketsByShowingId(ShowingId);
-
             var formatedSeats = seats.Select(i => new SeatListViewModel { SeatId = i.Id, Column = i.Column, Row = i.Row, IsSelected = seatIdsForTickets.Contains(i.Id)});
+            
+            // Data is grouped to dispay data by row and column easier
             var groupedFormatedSeats = formatedSeats.GroupBy(i => i.Row);
 
             SeatSelectionViewModel data = new SeatSelectionViewModel
             {
                 ShowingId = ShowingId,
                 MovieTitle = showing!.Movie!.Title,
+                MovieId = showing!.MovieId,
                 ShowingTime = showing.ShowingTime,
                 AuditoriumTitle = showing.Auditorium.Title,
                 GroupedSeats = groupedFormatedSeats,
+                TotalAvailableSeats = seats.Count - seatIdsForTickets.Count
             };
 
             return View(data);
