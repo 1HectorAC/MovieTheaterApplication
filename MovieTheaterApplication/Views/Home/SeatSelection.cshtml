@@ -24,6 +24,7 @@
                                     <label for="seat@(group.Key)@(seat.Column)">@group.Key @seat.Column</label>
 
                                     <input id="seat@(group.Key)@(seat.Column)"
+                                           class="seatElement"
                                            name="SeatIds"
                                            type="checkbox"
                                            value="@seat.SeatId"
@@ -34,12 +35,13 @@
                     </div>
                 }
                 <br />
-                <button class="btn btn-primary">Submit</button>
+                <button class="btn btn-primary submitButton" disabled>Submit</button>
                 @if (TempData["ErrorMessage"] != null)
                 {
                     <p>System Error. Can't select seats.</p>
                 }
             </form>
+            <p class="test"></p>
         }
         else
         {
@@ -56,4 +58,23 @@
 
     </div>
 </div>
+
+<script>
+        // Disable/Enable Submit button based on if any Seats Selected
+        const seats = document.querySelectorAll(".seatElement");
+        const submitButton = document.querySelector(".submitButton");
+        seats.forEach(button => {
+            button.addEventListener("click", event => {
+                    if(button.checked){
+                        submitButton.disabled = false;
+                    }
+                    else{
+                        // Check all seats checkboxs to disable submit button
+                        const allUnchecked = Array.from(seats).every(cb => !cb.checked);
+                        if(allUnchecked)
+                            submitButton.disabled = true;
+                    }
+            });
+        });
+</script>
 
