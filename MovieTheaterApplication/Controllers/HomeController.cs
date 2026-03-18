@@ -88,6 +88,11 @@ namespace MovieTheaterApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> SelectShowingSeat([FromForm] CreateTicketsDto dto )
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("SeatSelection", new { ShowingId = dto.ShowingId });
+            }
+
             try
             {
                 await _movieTheaterRepository.TicketsAddRange(dto.SeatIds, dto.ShowingId);
@@ -96,8 +101,8 @@ namespace MovieTheaterApplication.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                // Maybe redirect to error page
-                TempData["ErrorMessage"] = "error with stuff";
+                // Consider redirect to error page instead.
+                TempData["ErrorMessage"] = "Error making tickets.";
                 return RedirectToAction("SeatSelection", new { ShowingId = dto.ShowingId });
             }
             

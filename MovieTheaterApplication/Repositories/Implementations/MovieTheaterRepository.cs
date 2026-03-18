@@ -94,10 +94,23 @@ namespace MovieTheaterApplication.Repositories.Implementations
 
         public async Task TicketsAddRange(int[] seatIds, int showingId)
         {
+            if (seatIds.Length <= 0)
+                throw new ArgumentException();
+
+            // Check to make sure no ticket with id from seatIds + showingId exits
+            foreach (var id in seatIds) {
+                if (_context.Tickets.Any(i => i.SeatId == id && i.ShowingId == showingId))
+                {
+                    throw new Exception();
+                }
+            }
+
             var tickets = seatIds.ToList().Select(i => new Ticket { SeatId = i, ShowingId = showingId });
 
             await _context.AddRangeAsync(tickets);
         }
+
+        
 
 
         public async Task SaveChanges()

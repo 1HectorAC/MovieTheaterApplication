@@ -38,7 +38,7 @@
                 <button class="btn btn-primary submitButton" disabled>Submit</button>
                 @if (TempData["ErrorMessage"] != null)
                 {
-                    <p>System Error. Can't select seats.</p>
+                        <p>@TempData["ErrorMessage"] </p>
                 }
             </form>
             <p class="test"></p>
