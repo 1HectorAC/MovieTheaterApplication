@@ -6,7 +6,11 @@ namespace MovieTheaterApplication.Repositories
     {
         Task<List<Movie>> GetMovies();
 
+        Task<List<Movie>> GetMoviesWhereShowingsInTimeWindow(DateTime start, DateTime end);
+
         Task<List<Showing>> GetShowingsByMovieId(int movieId);
+
+        Task<List<Showing>> GetShowingsByMovieIdWhereShowingsInTimeWindow(int movieId, DateTime start, DateTime end);
 
         Task<List<Seat>> GetSeatsByShowingId(int showingId);
 

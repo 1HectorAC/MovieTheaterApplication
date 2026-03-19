@@ -20,8 +20,10 @@ namespace MovieTheaterApplication.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Might want to narrow to showings to today or add range somehow
-            var movies = await _movieTheaterRepository.GetMovies();
+            var currentDateTime = DateTime.Now;
+
+            // Filter to only show movies with showing from an hour ago to 30 days from now.
+            var movies = await _movieTheaterRepository.GetMoviesWhereShowingsInTimeWindow(currentDateTime.AddHours(-1), currentDateTime.AddDays(30));
 
 
             return View(movies);
@@ -29,13 +31,14 @@ namespace MovieTheaterApplication.Controllers
 
         public async Task<IActionResult> ShowingSelection(int MovieId)
         {
-            var showings = await _movieTheaterRepository.GetShowingsByMovieId(MovieId);
+            var currentDateTime = DateTime.Now;
+
+            var showings = await _movieTheaterRepository.GetShowingsByMovieIdWhereShowingsInTimeWindow(MovieId, currentDateTime.AddHours(-1), currentDateTime.AddDays(30));
             var movie = await _movieTheaterRepository.GetMovieById(MovieId);
+            
 
-            // Get DateTime for an hour ago to filter out old showings.
-            var currentDateTime = DateTime.Now.AddHours(-1);
-
-            var formatedShowings = showings.Where(i => i.ShowingTime > currentDateTime).Select(i => new ShowingViewModel
+            var formatedShowings = showings
+                .Select(i => new ShowingViewModel
             {
                 Id = i.Id,
                 ShowingTime = i.ShowingTime

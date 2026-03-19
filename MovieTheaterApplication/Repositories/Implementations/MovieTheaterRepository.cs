@@ -13,6 +13,7 @@ namespace MovieTheaterApplication.Repositories.Implementations
             _context = context;
         }
 
+        // Maybe remove, Unused
         // Maybe create seperate repositories later
         public async Task<List<Movie>> GetMovies()
         {
@@ -20,6 +21,19 @@ namespace MovieTheaterApplication.Repositories.Implementations
             return movies;
         }
 
+        public async Task<List<Movie>> GetMoviesWhereShowingsInTimeWindow(DateTime start, DateTime end)
+        {
+            var movies = await _context.Movies
+                .AsNoTracking()
+                .Include(movie => movie.Showings)
+                .Where(movie => movie.Showings.Any(showing => showing.ShowingTime > start && showing.ShowingTime < end))
+                .ToListAsync();
+
+            return movies;
+        }
+
+
+        // Maybe remove, Unused
         public async Task<List<Showing>> GetShowingsByMovieId(int movieId)
         {
             var showings = await _context.Showings
@@ -31,8 +45,19 @@ namespace MovieTheaterApplication.Repositories.Implementations
             return showings;
         }
 
+        public async Task<List<Showing>> GetShowingsByMovieIdWhereShowingsInTimeWindow(int movieId, DateTime start, DateTime end)
+        {
+            var showings = await _context.Showings
+                .AsNoTracking()
+                .Where(i => i.MovieId == movieId)
+                .Include(i => i.Auditorium)
+                .Where(showing => showing.ShowingTime > start && showing.ShowingTime < end)
+                .ToListAsync();
 
-        // Maybe remove, Unused
+            return showings;
+        }
+
+
         //Maybe move to seats repository
         public async Task<List<Seat>> GetSeatsByShowingId(int showingId)
         {
