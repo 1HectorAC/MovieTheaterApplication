@@ -4,24 +4,24 @@ namespace MovieTheaterApplication.Repositories
 {
     public interface IMovieTheaterRepository
     {
-        Task<List<Movie>> GetMovies();
+        
 
-        Task<List<Movie>> GetMoviesWhereShowingsInTimeWindow(DateTime start, DateTime end);
+        IQueryable<Movie> GetAllMovies();
 
-        Task<List<Showing>> GetShowingsByMovieId(int movieId);
+        Task<Movie?> GetMovieByIdAsync(int id);
 
-        Task<List<Showing>> GetShowingsByMovieIdWhereShowingsInTimeWindow(int movieId, DateTime start, DateTime end);
 
-        Task<List<Seat>> GetSeatsByShowingId(int showingId);
+        IQueryable<Showing> GetAllShowings();
 
-        Task<List<int>> GetSeatIdsOfTicketsByShowingId(int showingId);
+        Task<Showing?> GetShowingByIdWithMovie_Auditorium_SeatsAsync(int id);
 
-        Task<Movie?> GetMovieById(int movieId);
+        Task<Showing?> GetShowingByIdWithTicketsAsync(int id);
 
-        Task<Showing?> GetShowingById(int showingId);
+        IQueryable<Ticket> GetAllTickets();
 
-        Task TicketsAddRange(int[] SeatIds, int showingId);
+        Task AddTicketRangeAsync(IEnumerable<Ticket> tickets);
 
-        Task SaveChanges();
+        Task SaveChangesAsync();
+
     }
 }

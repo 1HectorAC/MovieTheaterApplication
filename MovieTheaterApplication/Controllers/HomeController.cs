@@ -5,17 +5,18 @@ using MovieTheaterApplication.Models;
 using MovieTheaterApplication.Models.ViewModels;
 using MovieTheaterApplication.Repositories;
 using MovieTheaterApplication.Repositories.Implementations;
+using MovieTheaterApplication.Services;
 
 namespace MovieTheaterApplication.Controllers
 {
     public class HomeController : Controller
     {
 
-        private readonly IMovieTheaterRepository _movieTheaterRepository;
+        private readonly IMovieTheaterService _service;
 
-        public HomeController( IMovieTheaterRepository movieTheaterRepository)
+        public HomeController( IMovieTheaterService service)
         {
-            _movieTheaterRepository = movieTheaterRepository;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
@@ -23,7 +24,7 @@ namespace MovieTheaterApplication.Controllers
             var currentDateTime = DateTime.Now;
 
             // Filter to only show movies with showing from an hour ago to 30 days from now.
-            var movies = await _movieTheaterRepository.GetMoviesWhereShowingsInTimeWindow(currentDateTime.AddHours(-1), currentDateTime.AddDays(30));
+            var movies = await _service.GetMoviesWhereShowingsInTimeWindow(currentDateTime.AddHours(-1), currentDateTime.AddDays(30));
 
 
             return View(movies);
@@ -33,8 +34,8 @@ namespace MovieTheaterApplication.Controllers
         {
             var currentDateTime = DateTime.Now;
 
-            var showings = await _movieTheaterRepository.GetShowingsByMovieIdWhereShowingsInTimeWindow(MovieId, currentDateTime.AddHours(-1), currentDateTime.AddDays(30));
-            var movie = await _movieTheaterRepository.GetMovieById(MovieId);
+            var showings = await _service.GetShowingsByMovieIdWhereShowingsInTimeWindow(MovieId, currentDateTime.AddHours(-1), currentDateTime.AddDays(30));
+            var movie = await _service.GetMovieById(MovieId);
             
 
             var formatedShowings = showings
@@ -57,7 +58,7 @@ namespace MovieTheaterApplication.Controllers
 
         public async Task<IActionResult> SeatSelection(int ShowingId)
         {
-            var showing = await _movieTheaterRepository.GetShowingById(ShowingId);
+            var showing = await _service.GetShowingById(ShowingId);
 
             // Null value check of showing fields
             if (showing is null || showing.Movie is null || showing.Auditorium is null)
@@ -68,7 +69,7 @@ namespace MovieTheaterApplication.Controllers
             var seats = showing!.Auditorium!.Seats;
           
             // Get seatIds for tickets of a the specified showing. Used to filter out seats that are open (has no ticket)
-            var seatIdsForTickets = await _movieTheaterRepository.GetSeatIdsOfTicketsByShowingId(ShowingId);
+            var seatIdsForTickets = await _service.GetSeatIdsOfTicketsByShowingId(ShowingId);
             var formatedSeats = seats.Select(i => new SeatListViewModel { SeatId = i.Id, Column = i.Column, Row = i.Row, IsSelected = seatIdsForTickets.Contains(i.Id)});
             
             // Data is grouped to dispay data by row and column easier
@@ -98,8 +99,7 @@ namespace MovieTheaterApplication.Controllers
 
             try
             {
-                await _movieTheaterRepository.TicketsAddRange(dto.SeatIds, dto.ShowingId);
-                await _movieTheaterRepository.SaveChanges();
+                await _service.CreateTickets(dto.SeatIds, dto.ShowingId);
             }
             catch (Exception ex)
             {

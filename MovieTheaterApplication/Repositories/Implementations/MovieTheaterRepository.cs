@@ -13,134 +13,54 @@ namespace MovieTheaterApplication.Repositories.Implementations
             _context = context;
         }
 
-        // Maybe remove, Unused
-        // Maybe create seperate repositories later
-        public async Task<List<Movie>> GetMovies()
+        public IQueryable<Movie> GetAllMovies()
         {
-            var movies = await _context.Movies.ToListAsync();
-            return movies;
+            return _context.Movies.AsNoTracking();
         }
 
-        public async Task<List<Movie>> GetMoviesWhereShowingsInTimeWindow(DateTime start, DateTime end)
+        public async Task<Movie?> GetMovieByIdAsync(int id)
         {
-            var movies = await _context.Movies
+            return await _context.Movies
                 .AsNoTracking()
-                .Include(movie => movie.Showings)
-                .Where(movie => movie.Showings.Any(showing => showing.ShowingTime > start && showing.ShowingTime < end))
-                .ToListAsync();
-
-            return movies;
+                .FirstOrDefaultAsync(movie => movie.Id == id);
         }
 
-
-        // Maybe remove, Unused
-        public async Task<List<Showing>> GetShowingsByMovieId(int movieId)
+        public IQueryable<Showing> GetAllShowings()
         {
-            var showings = await _context.Showings
+            return _context.Showings.AsNoTracking();
+        }
+
+        public async Task<Showing?> GetShowingByIdWithMovie_Auditorium_SeatsAsync(int id)
+        {
+            return await _context.Showings
                 .AsNoTracking()
-                .Where(i => i.MovieId == movieId)
-                .Include(i => i.Auditorium)
-                .ToListAsync();
-
-            return showings;
+                .Include(showing => showing.Movie)
+                .Include(showing => showing.Auditorium)
+                .ThenInclude(auditorium => auditorium.Seats)
+                .FirstOrDefaultAsync(showing => showing.Id == id);
         }
 
-        public async Task<List<Showing>> GetShowingsByMovieIdWhereShowingsInTimeWindow(int movieId, DateTime start, DateTime end)
+        public async Task<Showing?> GetShowingByIdWithTicketsAsync(int id)
         {
-            var showings = await _context.Showings
+            return await _context.Showings
                 .AsNoTracking()
-                .Where(i => i.MovieId == movieId)
-                .Include(i => i.Auditorium)
-                .Where(showing => showing.ShowingTime > start && showing.ShowingTime < end)
-                .ToListAsync();
-
-            return showings;
+                .Include(showing => showing.Tickets)
+                .FirstOrDefaultAsync(showing => showing.Id == id);
         }
 
-
-        //Maybe move to seats repository
-        public async Task<List<Seat>> GetSeatsByShowingId(int showingId)
+        public IQueryable<Ticket> GetAllTickets()
         {
-            // Consider checking if auditorim for showing exits before getting.
-
-            var showing = await _context.Showings
-                .AsNoTracking()
-                .Include(i => i.Auditorium)
-                .ThenInclude(i => i.Seats)
-                .FirstOrDefaultAsync(i => i.Id == showingId);
-
-            if (showing is null)
-                return new List<Seat>();
-
-            var auditorium = showing.Auditorium;
-            if (auditorium is null || auditorium.Seats is null)
-                return new List<Seat>();
-
-            return [.. auditorium.Seats];
+            return _context.Tickets;
         }
 
-        public async Task<List<int>> GetSeatIdsOfTicketsByShowingId(int showingId)
+        public async Task AddTicketRangeAsync(IEnumerable<Ticket> tickets)
         {
-            var showing = await _context.Showings
-                .AsNoTracking()
-                .Include(i => i.Tickets)
-                .FirstOrDefaultAsync(i => i.Id == showingId);
-
-            if (showing is null)
-                return new List<int>();
-
-            var tickets = showing.Tickets;
-            if (tickets is null)
-                return new List<int>();
-
-            var seatIds = tickets.Select(i => i.SeatId).ToList();
-            return seatIds;
-        }
-
-        public async Task<Movie?> GetMovieById(int movieId)
-        {
-            var movie = await _context.Movies
-                .AsNoTracking()
-                .FirstOrDefaultAsync(i => i.Id == movieId);
-            return movie;
-        }
-
-        public async Task<Showing?> GetShowingById(int showingId)
-        {
-            var showing = await _context.Showings
-                .AsNoTracking()
-                .Include(i => i.Movie)
-                .Include(i => i.Auditorium)
-                .ThenInclude(i => i.Seats)
-                .FirstOrDefaultAsync(i => i.Id == showingId);
-
-            return showing;
-        }
-
-        public async Task TicketsAddRange(int[] seatIds, int showingId)
-        {
-            if (seatIds.Length <= 0)
-                throw new ArgumentException();
-
-            // Check to make sure no ticket with id from seatIds + showingId exits
-            foreach (var id in seatIds) {
-                if (_context.Tickets.Any(i => i.SeatId == id && i.ShowingId == showingId))
-                {
-                    throw new Exception();
-                }
-            }
-
-            var tickets = seatIds.ToList().Select(i => new Ticket { SeatId = i, ShowingId = showingId });
-
             await _context.AddRangeAsync(tickets);
         }
-
-        
-
-
-        public async Task SaveChanges()
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
+
     }
 }
