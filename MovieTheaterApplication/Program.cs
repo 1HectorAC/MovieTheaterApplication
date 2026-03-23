@@ -3,6 +3,8 @@ using MovieTheaterApplication.Repositories.Implementations;
 using MovieTheaterApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
+using MovieTheaterApplication.Services;
+using MovieTheaterApplication.Services.Implementations;
 var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
@@ -12,6 +14,7 @@ builder.Configuration.AddEnvironmentVariables();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IMovieTheaterService, MovieTheaterService>();
 builder.Services.AddScoped<IShowingRepository, ShowingRepository>();
 builder.Services.AddScoped<IMovieTheaterRepository, MovieTheaterRepository>();
 builder.Services.AddSingleton<TestDb>();
