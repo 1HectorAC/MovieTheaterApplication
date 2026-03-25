@@ -6,7 +6,7 @@ namespace MovieTheaterApplication.Repositories
     {
         
 
-        IQueryable<Movie> GetAllMovies();
+        IQueryable<Movie> GetAllMoviesWithShowings();
 
         Task<Movie?> GetMovieByIdAsync(int id);
 

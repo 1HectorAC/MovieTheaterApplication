@@ -13,9 +13,11 @@ namespace MovieTheaterApplication.Repositories.Implementations
             _context = context;
         }
 
-        public IQueryable<Movie> GetAllMovies()
+        public IQueryable<Movie> GetAllMoviesWithShowings()
         {
-            return _context.Movies.AsNoTracking();
+            return _context.Movies
+                .AsNoTracking()
+                .Include(movie => movie.Showings);
         }
 
         public async Task<Movie?> GetMovieByIdAsync(int id)
@@ -36,7 +38,7 @@ namespace MovieTheaterApplication.Repositories.Implementations
                 .AsNoTracking()
                 .Include(showing => showing.Movie)
                 .Include(showing => showing.Auditorium)
-                .ThenInclude(auditorium => auditorium.Seats)
+                .ThenInclude(auditorium => auditorium!.Seats)
                 .FirstOrDefaultAsync(showing => showing.Id == id);
         }
 

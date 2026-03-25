@@ -17,10 +17,9 @@ namespace MovieTheaterApplication.Services.Implementations
 
         public async Task<List<Movie>> GetMoviesWhereShowingsInTimeWindow(DateTime start, DateTime end)
         {
-            var movies = _repo.GetAllMovies();
+            var movies = _repo.GetAllMoviesWithShowings();
 
             var filteredMovies = await movies
-                .Include(movie => movie.Showings)
                 .Where(movie => movie.Showings.Any(showing => showing.ShowingTime > start && showing.ShowingTime < end))
                 .ToListAsync();
 
