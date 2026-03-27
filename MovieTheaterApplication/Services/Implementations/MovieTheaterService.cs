@@ -32,7 +32,6 @@ namespace MovieTheaterApplication.Services.Implementations
             var showings = _repo.GetAllShowings();
 
             var filteredShowings = await showings
-                .Include(showing => showing.Auditorium)
                 .Where(showing => showing.MovieId == movieId && showing.ShowingTime > start && showing.ShowingTime < end)
                 .ToListAsync();
 
