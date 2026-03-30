@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
-
+using Moq;
 using MovieTheaterApplication.Data;
 using MovieTheaterApplication.Models;
 using MovieTheaterApplication.Repositories;
@@ -237,6 +237,70 @@ namespace MovieTheaterApplicationTests.Services
             {
                 Assert.InRange(s.ShowingTime, startTime, endTime);
             }
+        }
+
+        [Fact]
+        public async Task GetSeatIdsOfTicketsByShowingId_AllTicketsBelongingToSameShowing_ReturnAllSeatIds()
+        {
+            // Arrange
+            var tickets = new List<Ticket>
+            {
+                new Ticket {Id = 1, ShowingId = 1, SeatId=1},
+                new Ticket {Id = 2, ShowingId = 1, SeatId=2},
+                new Ticket {Id = 3, ShowingId = 1, SeatId=3}
+            };
+            var showing = new Showing
+            {
+                Id = 1,
+                MovieId = 1,
+                ShowingTime = new DateTime(2025, 3, 2),
+                Tickets = tickets
+            };
+
+            var repo = new Mock<IMovieTheaterRepository>();
+            repo.Setup(r => r.GetShowingByIdWithTicketsAsync(1)).ReturnsAsync(showing
+                );
+            var service = new MovieTheaterService(repo.Object);
+
+            // Act
+            var result = await service.GetSeatIdsOfTicketsByShowingId(1);
+
+
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Count);
+        }
+
+        [Fact]
+        public async Task GetSeatIdsOfTicketsByShowingId_MostTicketsBelongingToSameShowing_ReturnAllSeatIdsOfShowing()
+        {
+            // Arrange
+            var tickets = new List<Ticket>
+            {
+                new Ticket {Id = 1, ShowingId = 1, SeatId=1},
+                new Ticket {Id = 2, ShowingId = 1, SeatId=2},
+                new Ticket {Id = 3, ShowingId = 2, SeatId=3}
+            };
+            var showing = new Showing
+            {
+                Id = 1,
+                MovieId = 1,
+                ShowingTime = new DateTime(2025, 3, 2),
+                Tickets = tickets.Where(ticket => ticket.ShowingId == 1).ToArray()
+            };
+
+            var showingId = 1;
+            var repo = new Mock<IMovieTheaterRepository>();
+            repo.Setup(r => r.GetShowingByIdWithTicketsAsync(showingId)).ReturnsAsync(showing
+                );
+            var service = new MovieTheaterService(repo.Object);
+
+            // Act
+            var result = await service.GetSeatIdsOfTicketsByShowingId(1);
+
+
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
+            Assert.All(result, seatId => tickets.Any(ticket => ticket.SeatId == seatId && ticket.ShowingId == showingId));
         }
 
 
