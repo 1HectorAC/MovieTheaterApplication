@@ -303,7 +303,84 @@ namespace MovieTheaterApplicationTests.Services
             Assert.All(result, seatId => tickets.Any(ticket => ticket.SeatId == seatId && ticket.ShowingId == showingId));
         }
 
+        [Fact]
+        public async Task GetMovieById_MoviesWithOneIdMatch_ReturnMovieWithId()
+        {
+            // Arrange
+            var movie = new Movie { Id = 2, Description = "bb", Title = "Two" };
+
+            var repo = new Mock<IMovieTheaterRepository>();
+            repo.Setup(r => r.GetMovieByIdAsync(2)).ReturnsAsync(movie);
+            var service = new MovieTheaterService(repo.Object);
+
+            // Act
+            var id = 2;
+            var result = await service.GetMovieById(id);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(id, result.Id);
+        }
+
+        [Fact]
+        public async Task GetMovieById_NoMoviesExits_ReturnNull()
+        {
+            // Arrange
+
+            var repo = new Mock<IMovieTheaterRepository>();
+            repo.Setup(r => r.GetMovieByIdAsync(2)).ReturnsAsync((Movie?)null);
+            var service = new MovieTheaterService(repo.Object);
+
+            // Act
+            var id = 2;
+            var result = await service.GetMovieById(id);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetShowingById_ShowingWithOneIdMatch_ReturnShowingWithId()
+        {
+            // Arrange
+            var showing = new Showing { Id = 2, AuditoriumId = 1, MovieId = 1, ShowingTime = new DateTime(2026,1,1) };
+            var repo = new Mock<IMovieTheaterRepository>();
+            repo.Setup(r => r.GetShowingByIdWithMovie_Auditorium_SeatsAsync(2)).ReturnsAsync(showing);
+            var service = new MovieTheaterService(repo.Object);
+
+            // Act
+            var id = 2;
+            var result = await service.GetShowingById(id);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(id, result.Id);
 
 
+        }
+
+        [Fact]
+        public async Task CreateTickets_NoTicketsExits_AddTicketsForEachSeatIdWithSameShowingId()
+        {
+            // Arrange
+            var seatIds = new int[] { 1,2,3 };
+            var showingId = 1;
+            var options = new DbContextOptionsBuilder<MovieTheaterDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+            var context = new MovieTheaterDbContext(options);
+            var repo = new MovieTheaterRepository(context);
+            var service = new MovieTheaterService(repo);
+
+            // Act
+            await service.CreateTickets(seatIds, showingId);
+
+            // Assert
+            var result = context.Tickets.ToList();
+            Assert.Equal(3, result.Count );
+            Assert.All(result, i => Assert.Equal(i.ShowingId, showingId));
+            Assert.All(result, i => Assert.Contains(i.SeatId, seatIds));
+
+        }
     }
 }
