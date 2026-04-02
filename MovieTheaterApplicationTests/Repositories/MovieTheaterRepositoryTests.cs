@@ -96,24 +96,23 @@ namespace MovieTheaterApplicationTests.Repositories
             // Assert
             Assert.Equal(3, result.Count);
         }
-
-
-        /*
+        
         [Fact]
         public async Task GetShowingByIdWithMovieAuditoriumSeatsAsync_OnlySomeShowings_ReturnShowingWithId()
         {
             // Arrange
+            var movie = new Movie { Id = 1, Description = "stuff", Title="aa" };
             var seats = new List<Seat>
             {
                 new Seat {Id = 1, AuditoriumId=1, Column=1, Row = 'a'},
                 new Seat {Id = 2, AuditoriumId=1, Column=1, Row = 'a'},
             };
-            var auditorium = new Auditorium { Id = 1, Title = "one"};
+            var auditorium = new Auditorium { Id = 1, Title = "one", Seats=seats};
             var showings = new List<Showing>
             {
-                new Showing {Id = 1, AuditoriumId = 1, MovieId = 1, ShowingTime = new DateTime(2026,1,1)},
-                new Showing {Id = 2, AuditoriumId = 1, MovieId = 1, ShowingTime = new DateTime(2026,1,2)},
-                new Showing {Id = 3, AuditoriumId = 1, MovieId = 2, ShowingTime = new DateTime(2026,1,1)}
+                new Showing {Id = 1, AuditoriumId = 1, MovieId = 1, ShowingTime = new DateTime(2026,1,1), Auditorium=auditorium},
+                new Showing {Id = 2, AuditoriumId = 1, MovieId = 1, ShowingTime = new DateTime(2026,1,2), Auditorium=auditorium},
+                new Showing {Id = 3, AuditoriumId = 1, MovieId = 1, ShowingTime = new DateTime(2026,1,1), Auditorium=auditorium}
             };
 
             var options = new DbContextOptionsBuilder<MovieTheaterDbContext>()
@@ -123,6 +122,7 @@ namespace MovieTheaterApplicationTests.Repositories
             var context = new MovieTheaterDbContext(options);
             context.Auditoriums.Add(auditorium);
             context.Seats.AddRange(seats);
+            context.Movies.Add(movie);
             context.Showings.AddRange(showings);
             context.SaveChanges();
 
@@ -130,13 +130,16 @@ namespace MovieTheaterApplicationTests.Repositories
 
             // Act
             var showingId = 2;
+            var showingsAll = context.Showings.ToList();
+            Assert.Contains(showingsAll, s => s.Id == showingId);
+
             var result = await repo.GetShowingByIdWithMovie_Auditorium_SeatsAsync(showingId);
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(showingId, result.Id);
         }
-        */
+        
 
         [Fact]
         public async Task GetShowingByIdWithTicketsAsync_OnlySomeShowings_ReturnShowingWithId()
